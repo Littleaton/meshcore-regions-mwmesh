@@ -11,6 +11,10 @@
     -->
     <base href="/meshcore/map/" />
     <title>Intermountain West Repeater Zone Selector — MeshCore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+    <script>(function(){var m=document.cookie.match(/(?:^|; )mwmesh_theme=([^;]+)/);if(!m||m[1]!=="dark")document.documentElement.setAttribute("data-theme","light");})();</script>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -18,12 +22,24 @@
       crossorigin=""
     />
     <link rel="stylesheet" href="./public/styles.css" />
+    <link rel="stylesheet" href="../../shared/mwmesh-theme.css?v=2" />
+    <script src="../../shared/mwmesh-theme.js?v=2" defer></script>
   </head>
-  <body>
+  <body class="map-page">
+    <nav class="site-header" aria-label="Site header">
+      <div class="header-inner">
+        <a class="site-brand" href="https://mwmesh.com" aria-label="MountainWest Mesh home"><span class="brand-logo"><img class="logo-dark" src="../../assets/mwmesh-logo-dark.png" alt="MountainWest Mesh"><img class="logo-light" src="../../assets/mwmesh-logo-light.png" alt=""></span></a>
+        <div class="desktop-nav" aria-label="Primary navigation"><a href="../../">Regions</a><a href="./" aria-current="page">Zone map</a><a href="../../config/">Config generator</a><a href="https://mwmesh.com/meshcore.html">Learn MeshCore ↗</a></div>
+        <a class="header-cta" href="https://discord.gg/qmeeRPkq3g" target="_blank" rel="noopener">Join Discord ↗</a>
+        <button type="button" class="theme-toggle" data-theme-toggle onclick="toggleMwmeshTheme()"><span data-theme-icon>☾</span></button>
+        <button type="button" class="menu-toggle" data-menu-toggle aria-expanded="false" aria-label="Open menu">☰</button>
+        <div class="mobile-nav" data-mobile-nav aria-label="Mobile navigation"><a href="../../">Region tools</a><a href="./">Zone map</a><a href="../../config/">Config generator</a><a href="https://mwmesh.com/meshcore.html">Learn MeshCore ↗</a><a href="https://discord.gg/qmeeRPkq3g" target="_blank" rel="noopener">Join Discord ↗</a></div>
+      </div>
+    </nav>
     <div class="app-shell">
       <aside class="panel">
         <div class="panel-header">
-          <div class="badge" id="brandBadge">🏔️ Intermountain West MeshCore</div>
+          <div class="badge" id="brandBadge">Intermountain West MeshCore</div>
           <h1>Repeater Zone Selector</h1>
           <p>Search an address or click the map, pick a repeater type, and get ready-to-paste region commands.</p>
         </div>
@@ -33,7 +49,7 @@
           <h2>Location</h2>
           <div class="card">
             <div class="input-row">
-              <input type="text" id="locInput" placeholder="e.g.  Idaho Falls,  83440,  Pocatello …" autocomplete="off" spellcheck="false" aria-label="Location" />
+              <input type="text" id="locInput" placeholder="e.g.  Salt Lake City,  84101 …" autocomplete="off" spellcheck="false" aria-label="Location" />
               <button class="btn btn-primary" id="locateBtn">Find</button>
             </div>
             <p class="hint">…or click anywhere on the map to drop a point.</p>

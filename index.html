@@ -1,212 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MeshCore - Mountain West Mesh</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            uvarsBlue: '#006eb6',
-            uvarsLight: '#a2daff',
-          }
-        }
-      }
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  <script>
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MeshCore Region Tools — MountainWest Mesh</title>
+  <meta name="description" content="Choose MountainWest Mesh region tags and generate ready-to-paste MeshCore configuration commands.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script>(function(){var m=document.cookie.match(/(?:^|; )mwmesh_theme=([^;]+)/);if(!m||m[1]!=="dark")document.documentElement.setAttribute("data-theme","light");})();</script>
+  <link rel="stylesheet" href="/shared/mwmesh-theme.css?v=2">
+  <script src="/shared/mwmesh-theme.js?v=2" defer></script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col font-sans" x-data="appData()" x-init="init()">
-
-  <template x-if="banner.title && banner.content">
-    <div class="w-full bg-uvarsLight dark:bg-blue-900 text-blue-900 dark:text-blue-100 text-center py-2 px-4 text-sm font-medium border-b border-blue-200 dark:border-blue-800">
-      <strong x-text="banner.title" class="uppercase tracking-wide"></strong>: <span x-text="banner.content"></span>
+<body class="grid-bg home-page">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="https://mwmesh.com" aria-label="MountainWest Mesh home">
+        <span class="brand-logo">
+          <img class="logo-dark" src="/assets/mwmesh-logo-dark.png" alt="MountainWest Mesh">
+          <img class="logo-light" src="/assets/mwmesh-logo-light.png" alt="">
+        </span>
+      </a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="/" aria-current="page">Regions</a>
+        <a href="/map/">Zone map</a>
+        <a href="/config/">Config generator</a>
+        <a href="https://mwmesh.com/meshcore.html">Learn MeshCore ↗</a>
+      </nav>
+      <a class="header-cta" href="https://discord.gg/qmeeRPkq3g" target="_blank" rel="noopener">Join Discord ↗</a>
+      <button type="button" class="theme-toggle" data-theme-toggle onclick="toggleMwmeshTheme()"><span data-theme-icon>☾</span></button>
+      <button type="button" class="menu-toggle" data-menu-toggle aria-expanded="false" aria-label="Open menu">☰</button>
+      <nav class="mobile-nav" data-mobile-nav aria-label="Mobile navigation">
+        <a href="/">Region tools</a><a href="/map/">Zone map</a><a href="/config/">Config generator</a>
+        <a href="https://mwmesh.com/meshcore.html">Learn MeshCore ↗</a>
+        <a href="https://discord.gg/qmeeRPkq3g" target="_blank" rel="noopener">Join Discord ↗</a>
+      </nav>
     </div>
-  </template>
+  </header>
 
-  <nav class="bg-uvarsBlue text-white shadow-lg sticky top-0 z-50" x-data="{ open: false }">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="flex items-center justify-between h-16">
-        <a href="/" class="text-xl font-bold tracking-tight">MWMesh <span class="font-light opacity-70">Mountain West Mesh</span></a>
-
-        <div class="hidden sm:flex items-center space-x-6">
-          <template x-for="page in pages" :key="page.path">
-            <a :href="page.path" :class="{ 'bg-white/20 px-3 py-1 rounded-md': currentPath === page.path }" class="text-sm font-medium hover:text-uvarsLight transition-colors">
-              <span x-text="page.name"></span>
-            </a>
-          </template>
-          <button @click="toggleDarkMode" class="p-2 rounded-full hover:bg-white/10 transition">
-            <template x-if="!darkMode">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-8.66h-1M4.34 12H3m15.36 6.36l-.71-.71M6.34 6.34l-.71-.71m12.02 0l-.71.71M6.34 17.66l-.71.71M12 5a7 7 0 100 14 7 7 0 000-14z" /></svg>
-            </template>
-            <template x-if="darkMode">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" /></svg>
-            </template>
-          </button>
+  <main>
+    <section class="regions-hero">
+      <div class="container hero-layout">
+        <div>
+          <p class="eyebrow"><span class="status-dot"></span> MountainWest Mesh region tools</p>
+          <h1>Choose the right region.<br><span>Configure with confidence.</span></h1>
+          <p class="hero-copy">Find the region tags that fit your location and coverage, then generate commands ready to paste into MeshCore.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="/map/">Explore the zone map →</a>
+            <a class="button button-secondary" href="/config/">Build my config →</a>
+          </div>
         </div>
-
-        <button @click="open = !open" class="sm:hidden p-2 rounded-md hover:bg-white/10">
-          <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-          <svg x-show="open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-        </button>
+        <aside class="hero-aside">
+          <p class="technical-label">Why regions matter</p>
+          <strong>Local traffic stays local.</strong>
+          <p>Region tags give messages the reach they need without asking every repeater across the Mountain West to carry them.</p>
+        </aside>
       </div>
-    </div>
+    </section>
 
-    <div x-show="open" class="sm:hidden bg-uvarsBlue border-t border-white/10 px-4 py-4 space-y-2">
-      <template x-for="page in pages" :key="page.path">
-        <a :href="page.path" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10">
-          <span x-text="page.name"></span>
-        </a>
-      </template>
-    </div>
-  </nav>
+    <section class="scope-strip" aria-label="Tool coverage">
+      <div class="container scope-grid">
+        <div><strong>ID + UT</strong><span>Core mapped regions</span></div>
+        <div><strong>6 states</strong><span>Surrounding-area coverage</span></div>
+        <div><strong>3 steps</strong><span>Location to commands</span></div>
+        <div><strong>MeshCore</strong><span>Firmware-aware output</span></div>
+      </div>
+    </section>
 
-  <main class="flex-grow">
-    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div class="max-w-4xl mx-auto px-6 py-12 text-center">
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
-                MeshCore
-            </h1>
-            <!-- TODO: replace with final human-written copy -->
-            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
-                Guides and tools for getting on the mesh in Eastern Idaho and beyond.
-            </p>
-            <a href="#region-tools"
-               class="inline-block mt-6 px-5 py-2.5 rounded-full bg-amber-600 text-white font-semibold text-sm shadow-sm hover:shadow-md hover:bg-uvarsBlue/90 transition-all">
-                Jump to Region Tools &darr;
-            </a>
+    <section class="home-section" id="tools">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">Pick your workflow</p><h2>Two ways to find your fit.</h2></div>
+          <p>Start visually with the map, or use the guided generator when you already know the location and want commands quickly.</p>
         </div>
-    </div>
-
-    <div class="max-w-4xl mx-auto px-6 py-12 space-y-12">
-
-      <!-- ── Getting started ─────────────────────────────────────────────── -->
-      <section>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-          <div aria-disabled="true"
-               class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 opacity-60 cursor-not-allowed select-none">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Getting Started with your Companion</h3>
-            <span class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">Coming Soon</span>
-            <!-- TODO: replace with final human-written copy -->
-            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-              Setting up a handheld or phone-paired node, and sending your first messages.
-            </p>
-          </div>
-
-          <div aria-disabled="true"
-               class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 opacity-60 cursor-not-allowed select-none">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Getting Started with your Repeater</h3>
-            <span class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">Coming Soon</span>
-            <!-- TODO: replace with final human-written copy -->
-            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-              Siting, powering, and configuring a repeater so it helps the mesh rather than crowding it.
-            </p>
-          </div>
-
+        <div class="tool-grid">
+          <a class="tool-card" href="/map/"><span class="tool-number">01 · VISUAL</span><h3>Zone map</h3><p>Search an address or click the map to inspect boundaries, compare nearby regions, and build a recommendation.</p><span class="tool-arrow" aria-hidden="true">→</span></a>
+          <a class="tool-card" href="/config/"><span class="tool-number">02 · GUIDED</span><h3>Config generator</h3><p>Answer three short questions and get firmware-specific region commands ready to paste into your node.</p><span class="tool-arrow" aria-hidden="true">→</span></a>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <div class="h-px bg-gray-200 dark:bg-gray-700"></div>
-
-      <!-- ── Regions explainer ───────────────────────────────────────────── -->
-      <section>
-        <div aria-disabled="true"
-             class="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 opacity-60 cursor-not-allowed select-none">
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">All About Regions</h3>
-          <span class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">Coming Soon</span>
-          <!-- TODO: replace with final human-written copy -->
-          <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl">
-            What region tags are, why they keep the mesh from flooding itself, and how to pick the right ones.
-          </p>
+    <section class="home-section explainer-section">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">How it works</p><h2>From location to region commands.</h2></div>
+          <p>The tools use mapped coverage polygons and the regional hierarchy. They do not assume that radio signals spread evenly across mountain terrain.</p>
         </div>
-      </section>
-
-      <!-- ── Region tools ────────────────────────────────────────────────── -->
-      <section id="region-tools">
-        <div class="flex items-center space-x-4 mb-6">
-          <h2 class="text-2xl font-bold">Region Tools</h2>
-          <div class="h-px flex-grow bg-gray-200 dark:bg-gray-700"></div>
+        <div class="steps-grid">
+          <article><span>01 · LOCATE</span><h3>Choose a point</h3><p>Search for a place or select the repeater location directly on the map.</p></article>
+          <article><span>02 · SCOPE</span><h3>Describe the site</h3><p>Tell us whether it is residential, urban infrastructure, or a wide-coverage high site.</p></article>
+          <article><span>03 · CONFIGURE</span><h3>Copy the commands</h3><p>Select the firmware version and paste the generated region configuration into MeshCore.</p></article>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-          <a href="./map/"
-             class="block p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-uvarsBlue dark:hover:border-uvarsLight transition-all group">
-            <h3 class="text-xl font-bold text-uvarsBlue dark:text-uvarsLight mb-2">
-              <span aria-hidden="true">🗺️</span> Zone Selector <span class="inline-block group-hover:translate-x-1 transition-transform">&rarr;</span>
-            </h3>
-            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-              Search an address or click the map to see the region boundaries and get ready-to-paste commands.
-            </p>
-          </a>
-
-          <a href="./config/"
-             class="block p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-uvarsBlue dark:hover:border-uvarsLight transition-all group">
-            <h3 class="text-xl font-bold text-uvarsBlue dark:text-uvarsLight mb-2">
-              <span aria-hidden="true">⚙️</span> Config Generator <span class="inline-block group-hover:translate-x-1 transition-transform">&rarr;</span>
-            </h3>
-            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-              A step-by-step wizard: location, repeater type, and firmware version in, commands out.
-            </p>
-          </a>
-
-        </div>
-
-        <p class="mt-6 text-sm text-gray-500 dark:text-gray-400">
-          Region Tools cover ID, UT, and surrounding areas. Suggestions? Email <a href="mailto:JoshKI7NOX@uvars.org">JoshKI7NOX@uvars.org</a><br />
-          Based on work by
-          <a href="https://gessaman.com/" target="_blank" rel="noopener"
-             class="text-uvarsBlue dark:text-uvarsLight hover:underline">Adam Gessaman</a>,
-          used with permission.
-        </p>
-      </section>
-
-    </div>
+      </div>
+    </section>
   </main>
 
-  <footer class="bg-uvarsBlue text-white py-8">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-        <p class="opacity-80">&copy; <span x-text="new Date().getFullYear()"></span> Mountain West Mesh.</p>
-        <p class="text-xs mt-2 uppercase tracking-widest opacity-50 font-bold"></p>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-layout">
+        <div><a href="https://mwmesh.com"><img class="footer-logo" src="/assets/mwmesh-logo-dark.png" alt="MountainWest Mesh"></a><p class="footer-copy">Community-run, off-grid communication across Utah, Idaho, Wyoming, and beyond.</p></div>
+        <div class="footer-links">
+          <div><h3>Region tools</h3><a href="/map/">Zone map</a><a href="/config/">Config generator</a><a href="mailto:JoshKI7NOX@uvars.org">Contact</a></div>
+          <div><h3>Community</h3><a href="https://mwmesh.com">MWMesh home ↗</a><a href="https://map.mwmesh.com">Network map ↗</a><a href="https://discord.gg/qmeeRPkq3g">Discord ↗</a></div>
+        </div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 MountainWest Mesh community</span><span>Not an emergency service. Always carry a backup communication method.</span></div>
     </div>
   </footer>
-
-  <script>
-    function appData() {
-      return {
-        darkMode: document.documentElement.classList.contains('dark'),
-        currentPath: window.location.pathname,
-        banner: { title: '', content: '' },
-        pages: [],
-        async init() {
-          try {
-            const navResp = await fetch('/assets/pages.json');
-            this.pages = await navResp.json();
-            const bannerResp = await fetch(`/assets/banner.json?t=${Date.now()}`);
-            this.banner = await bannerResp.json();
-          } catch (e) {
-            console.log("JSON files not found yet.");
-          }
-        },
-        toggleDarkMode() {
-          this.darkMode = !this.darkMode;
-          document.documentElement.classList.toggle('dark');
-          localStorage.theme = this.darkMode ? 'dark' : 'light';
-        }
-      }
-    }
-  </script>
 </body>
 </html>

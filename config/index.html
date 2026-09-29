@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MeshCore Region Config — Intermountain West</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script>(function(){var m=document.cookie.match(/(?:^|; )mwmesh_theme=([^;]+)/);if(!m||m[1]!=="dark")document.documentElement.setAttribute("data-theme","light");})();</script>
   <style>
     :root {
       --green:       #2d6a4f;
@@ -535,14 +539,29 @@
       .step-dot .dot-label { display: none; }
     }
   </style>
+  <link rel="stylesheet" href="../shared/mwmesh-theme.css?v=2">
+  <script src="../shared/mwmesh-theme.js?v=2" defer></script>
 </head>
-<body>
+<body class="grid-bg config-page">
 
-<header>
-  <div class="badge" id="brandBadge">🏔️ Intermountain West MeshCore</div>
-  <h1>Region Config Generator</h1>
-  <p>Enter your location and repeater type to get ready-to-paste CLI commands.</p>
-</header>
+<nav class="site-header" aria-label="Site header">
+  <div class="header-inner">
+    <a class="site-brand" href="https://mwmesh.com" aria-label="MountainWest Mesh home"><span class="brand-logo"><img class="logo-dark" src="../assets/mwmesh-logo-dark.png" alt="MountainWest Mesh"><img class="logo-light" src="../assets/mwmesh-logo-light.png" alt=""></span></a>
+    <div class="desktop-nav" aria-label="Primary navigation"><a href="../">Regions</a><a href="../map/">Zone map</a><a href="./" aria-current="page">Config generator</a><a href="https://mwmesh.com/meshcore.html">Learn MeshCore ↗</a></div>
+    <a class="header-cta" href="https://discord.gg/qmeeRPkq3g" target="_blank" rel="noopener">Join Discord ↗</a>
+    <button type="button" class="theme-toggle" data-theme-toggle onclick="toggleMwmeshTheme()"><span data-theme-icon>☾</span></button>
+    <button type="button" class="menu-toggle" data-menu-toggle aria-expanded="false" aria-label="Open menu">☰</button>
+    <div class="mobile-nav" data-mobile-nav aria-label="Mobile navigation"><a href="../">Region tools</a><a href="../map/">Zone map</a><a href="./">Config generator</a><a href="https://mwmesh.com/meshcore.html">Learn MeshCore ↗</a><a href="https://discord.gg/qmeeRPkq3g" target="_blank" rel="noopener">Join Discord ↗</a></div>
+  </div>
+</nav>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="badge" id="brandBadge">Intermountain West MeshCore</div>
+    <h1>Region Config Generator</h1>
+    <p>Enter your location and repeater type to get ready-to-paste CLI commands.</p>
+  </div>
+</section>
 
 <main>
 
@@ -566,7 +585,7 @@
         <input
           type="text"
           id="loc-input"
-          placeholder="e.g.  Idaho Falls,  83440,  Pocatello,  Logan …"
+          placeholder="e.g.  Salt Lake City,  84101 …"
           autocomplete="off"
           spellcheck="false"
           aria-label="Location"
@@ -677,7 +696,7 @@
 
 </main>
 
-<footer>
+<footer class="tool-footer">
   <span id="brandCoverage">Covers ID, UT, and surrounding areas</span> &nbsp;·&nbsp;
   Provided as a free service by the
   <a href="https://mwmesh.com" target="_blank" rel="noopener">Mountain West Mesh</a> &nbsp;·&nbsp;
