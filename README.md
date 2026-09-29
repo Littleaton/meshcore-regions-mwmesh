@@ -105,7 +105,7 @@ outside the `extentTag` polygon entirely are reported out of area.
 - **`hierarchy`** — the region tag tree. Purely administrative: region scopes are
   matched per-tag in firmware, so the tree exists for human legibility and for
   building `region def` commands, not for propagation. A tag with no polygon
-  (`us`, `west`, `pnw`, `inw`, `erc`) is never a resolution result — it is
+  (`pnw`, `inw`, `erc`) is never a resolution result — it is
   carried via `crossBorderRules` or `optionalTags` instead.
 - **`meta.polygons`** — the geometry file, the feature property holding each
   polygon's tag, and the `extentTag` used as the in-area mask.
@@ -125,9 +125,8 @@ outside the `extentTag` polygon entirely are reported out of area.
   - `add` (default) — an overlay tag added on request. `erc` is one: not
     geographic, never inferred.
   - `strip` — inverts the checkbox. The tag is part of the normal ancestry and is
-    **removed** unless opted in. `us` and `west` use this, scoped with
-    `showFor: ["high-site"]`, so a wide-coverage site doesn't carry continental
-    scope by default while a home node is unaffected.
+    **removed** unless opted in. It can be scoped to selected repeater types with
+    `showFor` when a future region needs that behavior.
 
 `regions.geo.json` is a GeoJSON `FeatureCollection` in WGS84; each feature's
 `region` property matches a `hierarchy` tag. It is exported from GIS and
@@ -142,7 +141,7 @@ viewport, or border.
 Both tools emit the same three-part sequence, adapted to the selected firmware:
 
 ```
-region def us west imw ut wf slc
+region def imw ut wf slc
 region default wf
 region save
 ```

@@ -32,13 +32,10 @@
   },
 
   "hierarchy": {
-    "_comment_hierarchy": "Parent chain is administrative only — it shapes the region put/def commands and the ancestry a node carries. Region scopes are matched per-tag in firmware, so the tree is for human legibility, not propagation. Tags with no polygon in regions.geo.json (us, west, pnw, inw, erc) are never resolution results; they are carried via crossBorderRules or optionalTags.",
+    "_comment_hierarchy": "Parent chain is administrative only — it shapes the region put/def commands and the ancestry a node carries. Region scopes are matched per-tag in firmware, so the tree is for human legibility, not propagation. Tags with no polygon in regions.geo.json (pnw, inw, erc) are never resolution results; they are carried via crossBorderRules or optionalTags.",
 
-    "us":     { "label": "United States",          "parent": null },
-    "west":   { "label": "Western United States",  "parent": "us" },
-
-    "imw":    { "label": "Intermountain West",     "parent": "west" },
-    "pnw":    { "label": "Pacific Northwest",      "parent": "west" },
+    "imw":    { "label": "Intermountain West",     "parent": null },
+    "pnw":    { "label": "Pacific Northwest",      "parent": null },
 
     "id":     { "label": "Idaho",                  "parent": "imw" },
 
@@ -127,25 +124,6 @@
       "label": "Support ERC Region",
       "info": "Check to include the 'erc' region, utilized by the Emergency Response Communications program of the Church of Jesus Christ of Latter-day Saints",
       "default": false
-    },
-    {
-      "_comment": "mode \"strip\" inverts the checkbox: the tag is part of the normal ancestry and is REMOVED unless the operator opts in. showFor limits which repeater types see the row at all.",
-      "tag": "west",
-      "label": "Support West Region",
-      "info": "There is a risk that enabling this region could lead to congestion in the future, and it may need to be disabled at that time, but it's fine to enable today",
-      "default": false,
-      "mode": "strip",
-      "showFor": ["high-site"],
-      "highlight": true
-    },
-    {
-      "tag": "us",
-      "label": "Support US Region",
-      "info": "There is a risk that enabling this region could lead to congestion in the future, and it may need to be disabled at that time, but it's fine to enable today",
-      "default": false,
-      "mode": "strip",
-      "showFor": ["high-site"],
-      "highlight": true
     }
   ],
 

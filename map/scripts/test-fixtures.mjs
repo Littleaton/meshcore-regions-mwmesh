@@ -33,38 +33,40 @@ const fixtures = [
     name: "Idaho Falls ID",
     lat: 43.4917, lon: -112.0339,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "id", "e-id", "ida"],
+    expectedTags: ["imw", "id", "e-id", "ida"],
     expectedDefault: "e-id"
   },
   {
     name: "Rexburg ID (inside the ida backstop)",
     lat: 43.8260, lon: -111.7897,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "id", "e-id", "ida"]
+    expectedTags: ["imw", "id", "e-id", "ida"]
   },
   {
     name: "Pocatello ID",
     lat: 42.8713, lon: -112.4455,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "id", "e-id", "pih"]
+    expectedTags: ["imw", "id", "e-id", "pih"]
   },
   {
     name: "Twin Falls ID",
     lat: 42.5558, lon: -114.4701,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "id", "s-id", "twf"]
+    expectedTags: ["imw", "id", "s-id", "twf"]
   },
   {
     name: "Salt Lake City UT",
     lat: 40.7608, lon: -111.8910,
     repeaterType: "residential",
-    expectedPrimary: "slc"
+    expectedPrimary: "slc",
+    expectedContainsTags: ["imw", "ut", "wf", "slc"],
+    expectedMissingTags: ["us", "west"]
   },
   {
     name: "Cedar City UT",
     lat: 37.6775, lon: -113.0619,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "ut", "s-ut", "ced"]
+    expectedTags: ["imw", "ut", "s-ut", "ced"]
   },
 
   // ── Sibling dual-carry (shared parent + overlapping polygons) ─────────────
@@ -78,7 +80,7 @@ const fixtures = [
     name: "Salmon ID (now under c-id, not e-id)",
     lat: 45.1758, lon: -113.8958,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "id", "c-id", "smn"]
+    expectedTags: ["imw", "id", "c-id", "smn"]
   },
   {
     name: "McCall ID (myl, inside the c-id/sw-id overlap)",
@@ -91,7 +93,7 @@ const fixtures = [
     name: "Ketchum ID (sun under s-id)",
     lat: 43.6805, lon: -114.3638,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "id", "s-id", "sun"]
+    expectedTags: ["imw", "id", "s-id", "sun"]
   },
 
   // ── Cross-carry rules ─────────────────────────────────────────────────────
@@ -114,14 +116,14 @@ const fixtures = [
     name: "Jackson WY (inside the e-id backstop, not a metro)",
     lat: 43.4799, lon: -110.7624,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "id", "e-id"],
+    expectedTags: ["imw", "id", "e-id"],
     expectedDefault: "e-id"
   },
   {
     name: "Elko NV (no sub-state area — default falls back to the state)",
     lat: 40.8324, lon: -115.7631,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "nv"],
+    expectedTags: ["imw", "nv"],
     expectedDefault: "nv"
   },
   {
@@ -134,7 +136,7 @@ const fixtures = [
     name: "Moab UT (c-ut rural backstop)",
     lat: 38.5733, lon: -109.5498,
     repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "ut", "c-ut"]
+    expectedTags: ["imw", "ut", "c-ut"]
   },
 
   // ── Opt-in overlay tags ───────────────────────────────────────────────────
@@ -143,46 +145,14 @@ const fixtures = [
     lat: 43.4917, lon: -112.0339,
     repeaterType: "residential",
     optIn: ["erc"],
-    expectedTags: ["us", "west", "imw", "id", "e-id", "ida", "erc"]
+    expectedTags: ["imw", "id", "e-id", "ida", "erc"]
   },
   {
     name: "Idaho Falls ID — unknown opt-in tag is ignored",
     lat: 43.4917, lon: -112.0339,
     repeaterType: "residential",
     optIn: ["not-a-real-tag"],
-    expectedTags: ["us", "west", "imw", "id", "e-id", "ida"]
-  },
-
-  // ── Wide-scope strip toggles (us / west, high-site only) ──────────────────
-  {
-    name: "Idaho Falls high-site drops us + west by default",
-    lat: 43.4917, lon: -112.0339,
-    repeaterType: "high-site",
-    selectedMetros: ["ida"],
     expectedTags: ["imw", "id", "e-id", "ida"]
-  },
-  {
-    name: "Idaho Falls high-site with west opted in",
-    lat: 43.4917, lon: -112.0339,
-    repeaterType: "high-site",
-    selectedMetros: ["ida"],
-    optIn: ["west"],
-    expectedTags: ["west", "imw", "id", "e-id", "ida"]
-  },
-  {
-    name: "Idaho Falls high-site with both scopes opted in",
-    lat: 43.4917, lon: -112.0339,
-    repeaterType: "high-site",
-    selectedMetros: ["ida"],
-    optIn: ["us", "west"],
-    expectedTags: ["us", "west", "imw", "id", "e-id", "ida"],
-    expectedDefault: "e-id"
-  },
-  {
-    name: "Residential is unaffected by the high-site-only strip",
-    lat: 43.4917, lon: -112.0339,
-    repeaterType: "residential",
-    expectedTags: ["us", "west", "imw", "id", "e-id", "ida"]
   },
 
   // ── High-site multi-metro ─────────────────────────────────────────────────
