@@ -82,8 +82,8 @@ the fastest way to see what actually moved.
 ## How resolution works
 
 A point resolves to the **deepest polygon containing it**. Depth comes from the
-hierarchy, not from geometry, so if a simplified boundary lets a sliver of `ida`
-poke outside `e-id`, the ancestry chain stays coherent.
+hierarchy, not from geometry, so if a simplified Utah metro boundary pokes
+outside its parent area, the ancestry chain stays coherent.
 
 Polygons overlap on purpose — that is how dual-carry zones are expressed. Where
 two same-depth regions both contain a point, the one the point sits **furthest
@@ -92,8 +92,8 @@ two are siblings (same parent) and close enough, the secondary is added as a
 dual-carry tag.
 
 Regions may nest fully or partially. A sub-region drawn larger than the metros
-inside it acts as a rural backstop: a point out in the Lost River valley is
-inside `e-id` but no metro, and resolves to `e-id` with no metro tag.
+inside it acts as a rural backstop: a point in rural central Utah can be inside
+`c-ut` but no metro, and resolves to `c-ut` with no metro tag.
 
 Points falling in a gap snap to the nearest region within `meta.snapKm`. Points
 outside the `extentTag` polygon entirely are reported out of area.
@@ -118,8 +118,8 @@ outside the `extentTag` polygon entirely are reported out of area.
   (latitude as a function of longitude) — fine for the ID/UT line at 42°N,
   impossible for a north-south line like ID/WY.
 - **`crossBorderRules`** — declarative dual-carry and community-tag rules; a
-  `when` condition plus `addTags` and a `note`. Northern Idaho picking up `inw`
-  and `pnw` is the working example.
+  `when` condition plus `addTags` and a `note`. The current community-scope
+  additions are working examples.
 - **`optionalTags`** — operator-selectable checkboxes on the repeater-type step.
   Two modes:
   - `add` (default) — an overlay tag added on request. `erc` is one: not
@@ -142,12 +142,12 @@ viewport, or border.
 Both tools emit the same three-part sequence, adapted to the selected firmware:
 
 ```
-region def us west imw id e-id ida
-region default e-id
+region def us west imw ut wf slc
+region default wf
 region save
 ```
 
-`region default` is set to the sub-state area (`e-id`, `c-id`, `n-ut`, `s-ut`)
+`region default` is set to the sub-state area (`wf`, `wb`, `n-ut`, `c-ut`, `s-ut`)
 when the point has one, or the state (`wy`, `mt`) when it does not. On v1.15 and
 v1.14 the first line becomes a series of `region put` commands, with `region
 allowf` added on v1.14.
