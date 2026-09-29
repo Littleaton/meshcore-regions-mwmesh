@@ -179,20 +179,6 @@ img { max-width: 100%; }
   overflow: hidden;
   padding: clamp(75px, 10vw, 125px) 0 85px;
 }
-.regions-hero::after {
-  content: "";
-  position: absolute;
-  right: -5vw;
-  bottom: 0;
-  width: min(760px, 70vw);
-  height: 64%;
-  opacity: 0.28;
-  background:
-    linear-gradient(150deg, transparent 0 40%, var(--green) 40.2% 40.5%, transparent 40.7%),
-    linear-gradient(163deg, transparent 0 57%, var(--green) 57.2% 57.5%, transparent 57.7%);
-  clip-path: polygon(0 100%, 16% 46%, 29% 72%, 46% 23%, 59% 58%, 75% 8%, 100% 72%, 100% 100%);
-  pointer-events: none;
-}
 .hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr); gap: clamp(50px, 9vw, 120px); align-items: end; }
 .regions-hero h1 {
   max-width: 760px;
