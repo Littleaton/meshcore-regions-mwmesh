@@ -23,14 +23,20 @@ could be added.
 - There are currently no operator-selectable optional region tags.
 - `pnw` and `inw` remain non-geographic community scopes used only by declared
   cross-carry rules.
+- Utah recommendations carry the independent `wd-ut` wardriving scope.
+- Idaho and the other surrounding states do not receive `wd-*` scopes; those
+  communities manage wardriving differently.
 
 For example, a Salt Lake City recommendation can produce:
 
 ```text
-region def imw ut wf slc
+region def imw ut wf slc|* wd-ut
 region default wf
 region save
 ```
+
+In firmware 1.16 syntax, `|*` returns the definition cursor to the root before
+adding the independent wardriving scope.
 
 Older firmware receives the equivalent `region put` sequence; firmware 1.14
 also receives `region allowf` where required.
@@ -107,7 +113,7 @@ node map/scripts/test-fixtures.mjs --print
 The current expected result is:
 
 ```text
-regions.json OK — 34 regions, 32 polygons, 1 borders, 2 rules, 0 optional tags.
+regions.json OK — 35 regions, 32 polygons, 1 borders, 2 rules, 0 optional tags.
 Fixture tests passed: 23
 ```
 
@@ -124,7 +130,9 @@ After changing shared CSS, increment the `mwmesh-theme.css?v=` value in
 Cloudflare do not retain the previous stylesheet. The current version is `v=3`.
 After changing the shared region engine, likewise increment its import version
 in `config/index.html` and `map/src/main.js`, plus the `main.js?v=` loader in
-`map/index.html`. The current engine/main version is `v=2`.
+`map/index.html`. The current engine/main version is `v=4`. When changing
+`regions.json`, also update its `version` and `REGION_DATA_VERSION` in
+`shared/region-engine.js`; both are currently `0.3.1`.
 
 ## How region resolution works
 
@@ -151,7 +159,8 @@ outside the `extentTag` polygon are reported as out of area.
 - `meta.snapKm` and `meta.overlapKm` control gap and overlap behavior;
 - `metroGroups` provides high-site multi-select groupings;
 - `borders` classifies a point by state or country for applicable rules;
-- `crossBorderRules` declares community-scope and dual-carry additions; and
+- `crossBorderRules` declares community-scope and dual-carry additions;
+- `meta.wardriveTags` maps Utah to its independent `wd-ut` scope;
 - `optionalTags` is currently an empty array and remains available for future
   explicitly approved settings.
 

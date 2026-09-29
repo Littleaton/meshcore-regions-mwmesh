@@ -26,6 +26,7 @@ export let META = {};
 // index the resolver walks.
 export let REGION_GEOJSON = null;
 export let POLYGON_INDEX = [];
+const REGION_DATA_VERSION = "0.3.1";
 
 export function setRegions(data) {
   HIERARCHY = data.hierarchy ?? {};
@@ -48,7 +49,7 @@ export function setPolygons(geojson) {
 // Resolve both files relative to this module (repo-root/shared/region-engine.js),
 // so the tools work regardless of where the repo is mounted. Callers may override.
 export async function loadRegions(url, geoUrl) {
-  const target = url ?? new URL("../regions.json", import.meta.url);
+  const target = url ?? new URL(`../regions.json?v=${REGION_DATA_VERSION}`, import.meta.url);
   const res = await fetch(target);
   if (!res.ok) throw new Error(`Failed to load region data (${target})`);
   const data = setRegions(await res.json());
@@ -377,6 +378,35 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
     }
   };
 
+  // States explicitly listed in meta.wardriveTags carry their dedicated
+  // wardriving scope. Unlisted states intentionally receive no wd-* tag.
+  const applyWardriveTags = (tags, notes, { includeCarriedStates = false } = {}) => {
+    const mapping = META.wardriveTags ?? {};
+    const physicalStates = (res.containing ?? [])
+      .map(entry => entry.tag)
+      .filter(tag => Object.hasOwn(mapping, tag));
+    const states = new Set(
+      physicalStates.length
+        ? physicalStates
+        : Object.keys(mapping).filter(stateTag => tags.includes(stateTag))
+    );
+    if (includeCarriedStates) {
+      for (const stateTag of Object.keys(mapping)) {
+        if (tags.includes(stateTag)) states.add(stateTag);
+      }
+    }
+    const added = [];
+    for (const stateTag of states) {
+      const wardriveTag = mapping[stateTag];
+      if (!HIERARCHY[wardriveTag] || tags.includes(wardriveTag)) continue;
+      tags.push(wardriveTag);
+      added.push(wardriveTag);
+    }
+    if (added.length) {
+      notes.push(`Wardriving scope${added.length > 1 ? "s" : ""} added: ${added.join(", ")}.`);
+    }
+  };
+
   if (repeaterType === "residential") {
     const tags  = [...pA];
     const notes = ["Home profile — full ancestry for the selected local area."];
@@ -386,6 +416,7 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
     }
     tags.push(...extra);
     const all = [...notes, ...extraNotes];
+    applyWardriveTags(tags, all);
     applyOptIn(tags, all);
     return { strategy: actualSiblingOverlap ? "dual-metro" : "single-metro",
              tags: unique(tags), notes: all, defaultTag };
@@ -394,15 +425,16 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
   if (repeaterType === "urban") {
     const tags  = [...pA];
     const notes = ["Urban infrastructure — one metro with full ancestry."];
-    if (res.secondary && res.overlapLikely) {
+    const carriesSecondary = !!res.secondary && res.overlapLikely;
+    if (carriesSecondary) {
       tags.push(res.secondary.tag);
       notes.push(`Dual-carry added — point is in overlapping coverage (${pTag} + ${res.secondary.tag}).`);
     }
-    const baseLen = pA.length;
     tags.push(...extra);
     const all = [...notes, ...extraNotes];
+    applyWardriveTags(tags, all);
     applyOptIn(tags, all);
-    return { strategy: tags.length > baseLen ? "dual-metro" : "single-metro",
+    return { strategy: carriesSecondary ? "dual-metro" : "single-metro",
              tags: unique(tags), notes: all, defaultTag };
   }
 
@@ -414,6 +446,7 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
     const notes = metros.length > 1
       ? [`High-site serving ${metros.length} areas: ${metros.join(", ")}.`, ...extraNotes]
       : ["High-site — single metro affiliation with full ancestry.", ...extraNotes];
+    applyWardriveTags(allTags, notes, { includeCarriedStates: true });
     applyOptIn(allTags, notes);
     return { strategy: metros.length > 1 ? "multi-metro" : "single-metro",
              tags: unique(allTags), notes, defaultTag };
@@ -421,6 +454,7 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
 
   const tags = [...pA];
   const notes = [];
+  applyWardriveTags(tags, notes);
   applyOptIn(tags, notes);
   return { strategy: "single-metro", tags: unique(tags), notes, defaultTag };
 }

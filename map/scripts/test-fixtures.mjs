@@ -59,7 +59,7 @@ const fixtures = [
     lat: 40.7608, lon: -111.8910,
     repeaterType: "residential",
     expectedPrimary: "slc",
-    expectedContainsTags: ["imw", "ut", "wf", "slc"],
+    expectedContainsTags: ["imw", "ut", "wf", "slc", "wd-ut"],
     expectedMissingTags: ["us", "west"]
   },
   {
@@ -67,7 +67,7 @@ const fixtures = [
     lat: 40.5650, lon: -111.8390,
     repeaterType: "residential",
     expectedPrimary: "slc",
-    expectedTags: ["imw", "ut", "wf", "slc"],
+    expectedTags: ["imw", "ut", "wf", "slc", "wd-ut"],
     expectedMissingTags: ["utc"]
   },
   {
@@ -75,13 +75,13 @@ const fixtures = [
     lat: 40.5650, lon: -111.8390,
     repeaterType: "urban",
     expectedPrimary: "slc",
-    expectedTags: ["imw", "ut", "wf", "slc", "utc"]
+    expectedTags: ["imw", "ut", "wf", "slc", "utc", "wd-ut"]
   },
   {
     name: "Cedar City UT",
     lat: 37.6775, lon: -113.0619,
     repeaterType: "residential",
-    expectedTags: ["imw", "ut", "s-ut", "ced"]
+    expectedTags: ["imw", "ut", "s-ut", "ced", "wd-ut"]
   },
 
   // ── Sibling dual-carry (shared parent + overlapping polygons) ─────────────
@@ -151,7 +151,7 @@ const fixtures = [
     name: "Moab UT (c-ut rural backstop)",
     lat: 38.5733, lon: -109.5498,
     repeaterType: "residential",
-    expectedTags: ["imw", "ut", "c-ut"]
+    expectedTags: ["imw", "ut", "c-ut", "wd-ut"]
   },
 
   // ── Unknown opt-in tags are ignored ───────────────────────────────────────

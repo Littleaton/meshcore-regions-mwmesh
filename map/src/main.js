@@ -13,7 +13,7 @@ import {
   esc,
   colorForTag,
   META
-} from "../../shared/region-engine.js?v=2";
+} from "../../shared/region-engine.js?v=4";
 import { geocode } from "../../shared/geocode.js";
 import { mountOptionalTags } from "../../shared/optional-tags.js";
 

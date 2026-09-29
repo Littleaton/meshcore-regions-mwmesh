@@ -16,8 +16,8 @@ const REPO_ROOT = path.resolve(ROOT, "..");
 const REGIONS_PATH = path.join(REPO_ROOT, "regions.json");
 
 // Tags that exist in the hierarchy but deliberately have no geometry: roots,
-// cross-carry community scopes, and opt-in overlays. They are carried via
-// crossBorderRules or optionalTags, never resolved from a point.
+// cross-carry community scopes, wardriving scopes, and opt-in overlays. They
+// are carried by configuration, never resolved from a point.
 const NON_GEOGRAPHIC = new Set(["pnw", "inw"]);
 
 // Same-depth intersections below this (in square degrees) are treated as
@@ -195,7 +195,7 @@ async function main() {
 
     // Every geographic tag needs geometry; every non-geographic tag must not.
     for (const tag of tags) {
-      if (NON_GEOGRAPHIC.has(tag)) {
+      if (NON_GEOGRAPHIC.has(tag) || tag.startsWith("wd-")) {
         if (polys.has(tag)) {
           warn(`${tag} is listed NON_GEOGRAPHIC but has a polygon — it will never win depth resolution`);
         }
@@ -228,6 +228,20 @@ async function main() {
   for (const g of data.metroGroups ?? []) {
     for (const tag of g.tags ?? []) {
       if (!hierarchy[tag]) fail(`metroGroup "${g.label}" references unknown tag ${tag}`);
+    }
+  }
+
+  // Wardriving scopes: each mapping must point to an independent,
+  // non-geographic root tag. The state is encoded in the tag name/mapping,
+  // while the root placement keeps it parallel to the normal location path.
+  for (const [stateTag, wardriveTag] of Object.entries(data.meta?.wardriveTags ?? {})) {
+    if (!hierarchy[stateTag]) fail(`meta.wardriveTags references unknown state ${stateTag}`);
+    if (!hierarchy[wardriveTag]) {
+      fail(`meta.wardriveTags ${stateTag} references unknown tag ${wardriveTag}`);
+      continue;
+    }
+    if (hierarchy[wardriveTag].parent !== null) {
+      fail(`meta.wardriveTags ${wardriveTag} must be a root tag`);
     }
   }
 

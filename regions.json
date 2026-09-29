@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.1",
 
   "meta": {
     "_comment": "Every region-specific input for the tools lives in this file. Adapted from Adam Gessaman's Pacific Northwest MeshCore Regions (https://gessaman.com/) for the Intermountain West mesh, with permission.",
@@ -22,6 +22,10 @@
     "outOfAreaKm": 450,
 
     "optionalTagsCallout": { "label": "Wide-Area Scopes" },
+
+    "wardriveTags": {
+      "ut": "wd-ut"
+    },
 
     "geocoderCountryCodes": "us",
     "geocoderContact": "JoshKI7NOX@uvars.org",
@@ -60,6 +64,7 @@
     "boi":    { "label": "Boise",                  "parent": "sw-id" },
 
     "ut":     { "label": "Utah",                   "parent": "imw" },
+    "wd-ut":  { "label": "Utah Wardriving",        "parent": null },
 
     "wf":     { "label": "Wasatch Front",          "parent": "ut" },
     "ogd":    { "label": "Ogden",                  "parent": "wf" },
