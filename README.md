@@ -62,9 +62,9 @@ docker compose logs -f web
 docker compose down
 ```
 
-In production this is served by Caddy at `uvars.org/meshcore/`.
-`map/index.html` hardcodes `<base href="/meshcore/map/">` to match — if you
-remount the site at a different path, that is the one line to change.
+In production this is served through Nginx at `regions.mwmesh.com`.
+`map/index.html` retains `<base href="/meshcore/map/">`; the container provides
+that compatibility route alongside `/map/`.
 
 ### Checking your edits
 
