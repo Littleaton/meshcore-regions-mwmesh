@@ -1,0 +1,10 @@
+.git
+.claude
+.env*
+Dockerfile*
+compose*.yaml
+compose*.yml
+README.md
+map/README.md
+map/scripts
+

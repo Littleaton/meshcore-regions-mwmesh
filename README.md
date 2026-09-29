@@ -41,6 +41,27 @@ npx http-server -p 8080     # or: python3 -m http.server 8080
 - `http://localhost:8080/config/` — config generator
 - `http://localhost:8080/map/` — zone map selector
 
+### Docker
+
+The included Compose setup serves the static site with Nginx and supports the
+map's production `/meshcore/map/` base path:
+
+```bash
+docker compose up --build -d
+```
+
+Open `http://localhost:8080/`. To use another host port, set `PORT` when
+starting Compose (for example, `PORT=8090 docker compose up --build -d` on
+Linux/macOS or `$env:PORT=8090; docker compose up --build -d` in PowerShell).
+
+Useful lifecycle commands:
+
+```bash
+docker compose ps
+docker compose logs -f web
+docker compose down
+```
+
 In production this is served by Caddy at `uvars.org/meshcore/`.
 `map/index.html` hardcodes `<base href="/meshcore/map/">` to match — if you
 remount the site at a different path, that is the one line to change.
