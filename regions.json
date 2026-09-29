@@ -32,7 +32,7 @@
   },
 
   "hierarchy": {
-    "_comment_hierarchy": "Parent chain is administrative only — it shapes the region put/def commands and the ancestry a node carries. Region scopes are matched per-tag in firmware, so the tree is for human legibility, not propagation. Tags with no polygon in regions.geo.json (pnw, inw, erc) are never resolution results; they are carried via crossBorderRules or optionalTags.",
+    "_comment_hierarchy": "Parent chain is administrative only — it shapes the region put/def commands and the ancestry a node carries. Region scopes are matched per-tag in firmware, so the tree is for human legibility, not propagation. Tags with no polygon in regions.geo.json (pnw, inw) are never resolution results; they are carried via crossBorderRules.",
 
     "imw":    { "label": "Intermountain West",     "parent": null },
     "pnw":    { "label": "Pacific Northwest",      "parent": null },
@@ -79,13 +79,7 @@
     "wy":     { "label": "Wyoming",                "parent": "imw" },
     "mt":     { "label": "Montana",                "parent": "imw" },
 
-    "inw":    { "label": "Inland Northwest",       "parent": "imw" },
-
-    "erc":    {
-      "_comment": "Root-level by design: an affinity overlay, not a place. Has no polygon and is never a resolution result — it is added only when the operator opts in via optionalTags.",
-      "label": "Emergency Response Communications",
-      "parent": null
-    }
+    "inw":    { "label": "Inland Northwest",       "parent": "imw" }
   },
 
   "borders": [
@@ -117,15 +111,7 @@
     }
   ],
 
-  "optionalTags": [
-    {
-      "_comment": "Operator-selectable overlay tags, shown as checkboxes on the repeater-type step. Each `tag` must exist in `hierarchy`. Never geographic, never auto-applied.",
-      "tag": "erc",
-      "label": "Support ERC Region",
-      "info": "Check to include the 'erc' region, utilized by the Emergency Response Communications program of the Church of Jesus Christ of Latter-day Saints",
-      "default": false
-    }
-  ],
+  "optionalTags": [],
 
   "metroGroups": [
     { "label": "Eastern Idaho",   "tags": ["e-id", "ida", "pih", "dij"] },

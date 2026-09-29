@@ -139,14 +139,7 @@ const fixtures = [
     expectedTags: ["imw", "ut", "c-ut"]
   },
 
-  // ── Opt-in overlay tags ───────────────────────────────────────────────────
-  {
-    name: "Idaho Falls ID with ERC opt-in",
-    lat: 43.4917, lon: -112.0339,
-    repeaterType: "residential",
-    optIn: ["erc"],
-    expectedTags: ["imw", "id", "e-id", "ida", "erc"]
-  },
+  // ── Unknown opt-in tags are ignored ───────────────────────────────────────
   {
     name: "Idaho Falls ID — unknown opt-in tag is ignored",
     lat: 43.4917, lon: -112.0339,
@@ -162,15 +155,6 @@ const fixtures = [
     repeaterType: "high-site",
     selectedMetros: ["ida", "pih", "dij", "smn"],
     expectedContainsTags: ["e-id", "ida", "pih", "dij", "c-id", "smn"],
-    maxDefLength: 160
-  },
-  {
-    name: "Eastern Idaho high-site, four metros + ERC",
-    lat: 43.4917, lon: -112.0339,
-    repeaterType: "high-site",
-    selectedMetros: ["ida", "pih", "dij", "smn"],
-    optIn: ["erc"],
-    expectedContainsTags: ["erc"],
     maxDefLength: 160
   },
 

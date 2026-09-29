@@ -105,7 +105,7 @@ outside the `extentTag` polygon entirely are reported out of area.
 - **`hierarchy`** — the region tag tree. Purely administrative: region scopes are
   matched per-tag in firmware, so the tree exists for human legibility and for
   building `region def` commands, not for propagation. A tag with no polygon
-  (`pnw`, `inw`, `erc`) is never a resolution result — it is
+  (`pnw`, `inw`) is never a resolution result — it is
   carried via `crossBorderRules` or `optionalTags` instead.
 - **`meta.polygons`** — the geometry file, the feature property holding each
   polygon's tag, and the `extentTag` used as the in-area mask.
@@ -122,8 +122,8 @@ outside the `extentTag` polygon entirely are reported out of area.
   additions are working examples.
 - **`optionalTags`** — operator-selectable checkboxes on the repeater-type step.
   Two modes:
-  - `add` (default) — an overlay tag added on request. `erc` is one: not
-    geographic, never inferred.
+  - `add` (default) — an overlay tag added on request rather than inferred from
+    geography.
   - `strip` — inverts the checkbox. The tag is part of the normal ancestry and is
     **removed** unless opted in. It can be scoped to selected repeater types with
     `showFor` when a future region needs that behavior.

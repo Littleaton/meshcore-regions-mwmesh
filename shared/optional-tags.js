@@ -1,4 +1,4 @@
-// optional-tags.js — operator-selectable overlay tags (e.g. `erc`).
+// optional-tags.js — operator-selectable overlay tags.
 //
 // Renders the checkbox list defined by `optionalTags` in regions.json, with an
 // accessible info bubble per entry. Self-contained: injects its own CSS once, so
@@ -16,7 +16,7 @@
 //     hierarchy: HIERARCHY,
 //     onChange: (tags) => { S.optionalTags = tags; recompute(); },
 //   });
-//   optTags.selected();   // -> ["erc"]
+//   optTags.selected();   // -> selected tag names
 //   optTags.reset();      // back to each entry's `default`
 
 const STYLE_ID = "optional-tags-styles";
@@ -141,8 +141,8 @@ export function mountOptionalTags({ container, defs, hierarchy, onChange, divide
         const popId = `${ns}-pop-${i}`;
         const label = d.label || hierarchy[d.tag].label || d.tag;
         // Screen readers get the full region name rather than the checkbox's short
-        // call to action ("About Emergency Response Communications", not
-        // "About Support ERC Region").
+        // call to action using the configured program or region name rather
+        // than repeating the checkbox label.
         const infoName = hierarchy[d.tag].label || label;
         const info = d.info
           ? `<button type="button" class="opt-info-btn" data-pop="${popId}"

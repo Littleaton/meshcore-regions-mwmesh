@@ -328,7 +328,7 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
   const nearBoundary = !!res.secondary && res.overlapLikely &&
     isSibling(res.secondary.tag, pTag);
 
-  // Operator-selected overlay tags (e.g. erc). Never geographic, never inferred —
+  // Operator-selected overlay tags. Never geographic, never inferred —
   // appended after the rule-driven tags so they sort last in the command, and run
   // through the same unique() and length check as everything else.
   const applyOptIn = (tags, notes) => {
@@ -427,7 +427,7 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
 // Each token is either "tag" (cursor moves to tag) or "tag|jump" (create tag,
 // then reposition cursor to the named existing region).
 //
-// A root-level tag (parent null) — e.g. the `erc` overlay — emits "*" as its jump
+// A root-level optional tag (parent null) emits "*" as its jump
 // target, the same token a missing hierarchy entry would produce, so the cursor
 // returns to the root rather than to a named parent.
 export function buildRegionDefTokens(tags) {

@@ -18,7 +18,7 @@ const REGIONS_PATH = path.join(REPO_ROOT, "regions.json");
 // Tags that exist in the hierarchy but deliberately have no geometry: roots,
 // cross-carry community scopes, and opt-in overlays. They are carried via
 // crossBorderRules or optionalTags, never resolved from a point.
-const NON_GEOGRAPHIC = new Set(["us", "west", "pnw", "inw", "erc"]);
+const NON_GEOGRAPHIC = new Set(["pnw", "inw"]);
 
 // Same-depth intersections below this (in square degrees) are treated as
 // digitizing slivers rather than intended dual-carry, and only reported with -v.
