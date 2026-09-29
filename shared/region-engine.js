@@ -325,8 +325,13 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
     ? matchRules({ ...res.ruleCtx, repeaterType })
     : { tags: res.extraTags ?? [], notes: res.extraNotes ?? [] };
 
-  const nearBoundary = !!res.secondary && res.overlapLikely &&
-    isSibling(res.secondary.tag, pTag);
+  // A home node should dual-carry only where the mapped polygons genuinely
+  // overlap. `overlapLikely` also includes points merely close to a sibling
+  // boundary (within meta.overlapKm), which is useful for infrastructure but
+  // was incorrectly adding Utah County to Sandy-area residential nodes.
+  const actualSiblingOverlap = !!res.secondary &&
+    isSibling(res.secondary.tag, pTag) &&
+    (res.containing ?? []).some(entry => entry.tag === res.secondary.tag);
 
   // Operator-selected overlay tags. Never geographic, never inferred —
   // appended after the rule-driven tags so they sort last in the command, and run
@@ -375,14 +380,14 @@ export function computeRecommendation(res, repeaterType, selectedMetros = [], op
   if (repeaterType === "residential") {
     const tags  = [...pA];
     const notes = ["Home profile — full ancestry for the selected local area."];
-    if (nearBoundary) {
+    if (actualSiblingOverlap) {
       tags.push(res.secondary.tag);
-      notes.push(`Boundary overlap detected — dual local carry added (${pTag} + ${res.secondary.tag}).`);
+      notes.push(`Mapped coverage overlap detected — dual local carry added (${pTag} + ${res.secondary.tag}).`);
     }
     tags.push(...extra);
     const all = [...notes, ...extraNotes];
     applyOptIn(tags, all);
-    return { strategy: nearBoundary ? "dual-metro" : "single-metro",
+    return { strategy: actualSiblingOverlap ? "dual-metro" : "single-metro",
              tags: unique(tags), notes: all, defaultTag };
   }
 

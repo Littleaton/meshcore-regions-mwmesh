@@ -63,6 +63,21 @@ const fixtures = [
     expectedMissingTags: ["us", "west"]
   },
   {
+    name: "Sandy UT residential stays in the Salt Lake metro",
+    lat: 40.5650, lon: -111.8390,
+    repeaterType: "residential",
+    expectedPrimary: "slc",
+    expectedTags: ["imw", "ut", "wf", "slc"],
+    expectedMissingTags: ["utc"]
+  },
+  {
+    name: "Sandy UT urban infrastructure may carry the nearby Utah County metro",
+    lat: 40.5650, lon: -111.8390,
+    repeaterType: "urban",
+    expectedPrimary: "slc",
+    expectedTags: ["imw", "ut", "wf", "slc", "utc"]
+  },
+  {
     name: "Cedar City UT",
     lat: 37.6775, lon: -113.0619,
     repeaterType: "residential",
